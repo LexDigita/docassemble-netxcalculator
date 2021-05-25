@@ -1,0 +1,68 @@
+metadata:
+  title: GoDigital Qualification Check
+  short title: GoDigital Qualifier
+  comment: An interview to check if you qualify for GoDigital.
+---
+mandatory: true
+code: |
+ amount
+---
+question: Net X calculator
+subquestion: |
+  press next to see your total
+fields:
+  - project cost: amount
+    datatype: currency
+  - date of deposit: deposit_date
+    datatype: date
+    default: ${ today() }
+---
+Depends: amount
+code: |
+  if int(amount)*0.7 > 200000:
+    verification = False
+  else:
+    verification = True
+    contribution = int(amount)*0.5
+    discount_30 = int(amount)*0.5 - int(amount)*0.1
+    discount_45 = int(amount)*0.5 - int(amount)*0.07
+    discount_60 = int(amount)*0.5 - int(amount)*0.05
+---
+question: Calculator Summary
+subquestion: |
+  % if verification:
+    Congratulations, you qualify!
+    
+    Your downpayment is due on ${deposit_date.plus(days=90)} 
+    
+    
+    We require 50% of your contribution down ${currency(contribution)} and the balance within 90 days
+    
+    
+    Early payment discounts
+    Settle early and benefit from early payment discounts
+    
+    
+    10% discount on your contribution if settled by ${deposit_date.plus(days=30)} 
+    This would reduce your balance to ${currency(discount_30)}
+    
+    
+    7% discount on your contribution if settled by ${deposit_date.plus(days=45)}
+    This would reduce your total contribution to ${currency(discount_45)}
+    
+    
+    5% discount on your contribution if settled by ${deposit_date.plus(days=60)}
+    This would reduce your total contribution to ${currency(discount_60)}
+    
+    
+    Otherwise the balance remains ${currency(contribution)}
+  % else:
+    Sorry, you do not qualify.
+  %endif
+  
+  
+  Do you wish to do another check?
+buttons:
+  - Exit: exit
+  - Restart: restart
+mandatory: True
