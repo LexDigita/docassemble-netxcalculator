@@ -45,7 +45,7 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
 setup(name='docassemble.netxcalculator',
       version='0.0.1',
       description=('a simple calculator for godigital costs and discounts'),
-      long_description='# docassemble.netxcalculator\n\na simple calculator for godigital costs and discounts\n\n## Author\n\nMatthew Bailey, admin@admin.com\n\n',
+      long_description='# docassemble.netxcalculator\r\n\r\na simple calculator for godigital costs and discounts\r\n\r\n## Author\r\n\r\nMatthew Bailey, admin@admin.com\r\n\r\n',
       long_description_content_type='text/markdown',
       author='Matthew Bailey',
       author_email='matthew@alteroo.com',
