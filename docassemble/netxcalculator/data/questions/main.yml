@@ -1,67 +1,65 @@
 metadata:
-  title: GoDigital Qualification Check
-  short title: GoDigital Qualifier
+  title: GoData Payment Schedule
+  short title: Payment Schedule
   comment: An interview to check if you qualify for GoDigital.
 ---
 mandatory: true
 code: |
- amount
+ total_cost
 ---
-question: Net X calculator
+question: Payment Schedule
 subquestion: |
   press next to see your total
 fields:
-  - project cost: amount
+  - Project cost: total_cost
     datatype: currency
-  - date of deposit: deposit_date
+  - Date of Deposit: deposit_date
     datatype: date
-    default: ${ today() }
+    default: |
+      ${ today() }
 ---
-Depends: amount
+Depends: total_cost
 code: |
-  if int(amount)*0.7 > 200000:
-    verification = False
+  if int(total_cost)*0.7 > 200000:
+    DBJ = int(200000)
+    contribution = int(total_cost)-DBJ
   else:
-    verification = True
-    contribution = int(amount)*0.5
-    discount_30 = int(amount)*0.5 - int(amount)*0.1
-    discount_45 = int(amount)*0.5 - int(amount)*0.07
-    discount_60 = int(amount)*0.5 - int(amount)*0.05
+    DBJ = int(total_cost)*0.7
+    contribution = int(total_cost)-DBJ
+  discount_10 = contribution - contribution*0.1
+  discount_07 = contribution - contribution*0.07
+  discount_05 = contribution - contribution*0.05
 ---
-question: Calculator Summary
+question: |
+  # Payment Terms
 subquestion: |
-  % if verification:
-    Congratulations, you qualify!
-    
+    DBJ will cover ${currency(DBJ)} which leaves your total contribution at ${currency(contribution)}
     Your downpayment is due on ${deposit_date.plus(days=90)} 
     
     
-    We require 50% of your contribution down ${currency(contribution)} and the balance within 90 days
+    We require 50% of your contribution down ${currency(contribution/2)} and the balance within 90 days
     
     
-    Early payment discounts
+    ### Early payment discounts
     Settle early and benefit from early payment discounts
     
     
-    10% discount on your contribution if settled by ${deposit_date.plus(days=30)} 
-    This would reduce your balance to ${currency(discount_30)}
+    * 10% discount if settled by ${deposit_date.plus(days=30)} 
+    <br/>This would reduce your balance to ${currency(discount_10)}
     
     
-    7% discount on your contribution if settled by ${deposit_date.plus(days=45)}
-    This would reduce your total contribution to ${currency(discount_45)}
+    * 7% discount if settled by ${deposit_date.plus(days=45)}
+    <br/>This would reduce your total contribution to ${currency(discount_07)}
     
     
-    5% discount on your contribution if settled by ${deposit_date.plus(days=60)}
-    This would reduce your total contribution to ${currency(discount_60)}
+    * 5% discount if settled by ${deposit_date.plus(days=60)}
+    <br/>This would reduce your total contribution to ${currency(discount_05)}
     
     
     Otherwise the balance remains ${currency(contribution)}
-  % else:
-    Sorry, you do not qualify.
-  %endif
   
   
-  Do you wish to do another check?
+    Do you wish to do another check?
 buttons:
   - Exit: exit
   - Restart: restart
