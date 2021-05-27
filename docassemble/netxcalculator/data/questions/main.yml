@@ -5,27 +5,33 @@ metadata:
 ---
 mandatory: true
 code: |
- total_cost
+ project_cost
 ---
-question: Payment Schedule
+question: Payment Calculator
 subquestion: |
-  press next to see your total
+  press next to see your schedule
 fields:
-  - Project cost: total_cost
+  - Project cost: project_cost
+    datatype: currency
+  - Downpayment amount: downpayment
     datatype: currency
   - Date of Deposit: deposit_date
     datatype: date
     default: |
       ${ today() }
 ---
-Depends: total_cost
+Depends: project_cost
 code: |
-  if int(total_cost)*0.7 > 200000:
-    DBJ = int(200000)
-    contribution = int(total_cost)-DBJ
+  ratio = float(downpayment/project_cost)
+  if ratio >= 0.5:
+    total_cost = project_cost
   else:
-    DBJ = int(total_cost)*0.7
-    contribution = int(total_cost)-DBJ
+    total_cost = (1+(1-ratio)/2)*int(project_cost)
+  if int(total_cost)*0.7 > 200000:
+    DBJ = float(200000)
+  else:
+    DBJ = float(total_cost)*0.7
+  contribution = (float(total_cost)-DBJ) - downpayment
   discount_10 = contribution - contribution*0.1
   discount_07 = contribution - contribution*0.07
   discount_05 = contribution - contribution*0.05
@@ -45,7 +51,7 @@ subquestion: |
     
     
     * 10% discount if settled by ${deposit_date.plus(days=30)} 
-    <br/>This would reduce your balance to ${currency(discount_10)}
+    <br/>This would reduce your total contribution to ${currency(discount_10)}
     
     
     * 7% discount if settled by ${deposit_date.plus(days=45)}
@@ -56,10 +62,8 @@ subquestion: |
     <br/>This would reduce your total contribution to ${currency(discount_05)}
     
     
-    Otherwise the balance remains ${currency(contribution)}
+    Otherwise the total contribution remains ${currency(contribution)}
   
-  
-    Do you wish to do another check?
 buttons:
   - Exit: exit
   - Restart: restart
