@@ -39,11 +39,9 @@ code: |
 question: |
   # Payment Terms
 subquestion: |
-    DBJ will cover ${currency(DBJ)} which leaves your total contribution at ${currency(contribution)}
-    Your downpayment is due on ${deposit_date.plus(days=90)} 
-    
-    
-    We require 50% of your contribution down ${currency(contribution/2)} and the balance within 90 days
+    The total cost of the project is ${currency(total_cost)}<br/>
+    DBJ will cover ${currency(DBJ)} which leaves your total contribution at ${currency(contribution)}<br/>
+    The downpayment of ${currency(downpayment)} is due on ${deposit_date.plus(days=90)} 
     
     
     ### Early payment discounts
