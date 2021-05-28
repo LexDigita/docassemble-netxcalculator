@@ -41,8 +41,8 @@ question: |
 subquestion: |
     The total cost of the project is ${currency(total_cost)}<br/>
     DBJ will cover ${currency(DBJ)} which leaves your total contribution at ${currency(contribution)}<br/>
-    The downpayment of ${currency(downpayment)} is due on ${deposit_date.plus(days=90)} 
-    
+    The downpayment of ${currency(downpayment)} is due on ${deposit_date}<br/> 
+    Payment should be settled by ${deposit_date.plus(days=90)}
     
     ### Early payment discounts
     Settle early and benefit from early payment discounts
@@ -59,8 +59,6 @@ subquestion: |
     * 5% discount if settled by ${deposit_date.plus(days=60)}
     <br/>This would reduce your total contribution to ${currency(discount_05)}
     
-    
-    Otherwise the total contribution remains ${currency(contribution)}
   
 buttons:
   - Exit: exit
