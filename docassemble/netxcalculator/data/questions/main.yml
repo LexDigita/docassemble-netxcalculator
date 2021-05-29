@@ -3,6 +3,10 @@ metadata:
   short title: Payment Schedule
   comment: An interview to check if you qualify for GoDigital.
 ---
+features:
+  question back button: True
+  navigation back button: False
+---
 mandatory: true
 code: |
  project_cost
@@ -26,8 +30,8 @@ code: |
   if ratio >= 0.5:
     total_cost = project_cost
   else:
-    total_cost = (1+(1-ratio)/2)*int(project_cost)
-  if int(total_cost)*0.7 > 200000:
+    total_cost = (1+(0.6-ratio)/2)*float(project_cost)
+  if float(total_cost)*0.7 > 200000:
     DBJ = float(200000)
   else:
     DBJ = float(total_cost)*0.7
@@ -60,7 +64,8 @@ subquestion: |
     <br/>This would reduce your total contribution to ${currency(discount_05)}
     
   
+back button label: Adjust Downpayment
 buttons:
   - Exit: exit
-  - Restart: restart
+  - Restart: restart 
 mandatory: True
